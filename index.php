@@ -3,7 +3,7 @@
 <?php 
 $maxPage=10;
 if(isset($_GET["p"])) $p = intval($_GET["p"]);
-else $p=0;
+else $p=8;
 ?>
 	<head>
 		<title>Test</title>
