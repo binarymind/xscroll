@@ -15,7 +15,8 @@ else $p=0;
 		<meta name="apple-mobile-web-app-status-bar-style" content="black" /> 
 		<link type="text/css" rel="stylesheet" rev="stylesheet" media="screen" href="./css/css/screen.css">
 		<script type="text/javascript" src='http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js'></script>
-		<script type="text/javascript" src='./js/xscroll.js'></script>
+		<script type="text/javascript" src='./src/iscroll.js'></script>
+		<script type="text/javascript" src='./src/xscroll.js'></script>
 		<script type="text/javascript" src='./js/custom.js'></script>
 		<script type="text/javascript" src='./js/navigate.js'></script>
 	</head>
