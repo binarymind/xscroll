@@ -6,7 +6,7 @@
 xScroll
 ===========================
 
-just a small extension of the famous iScroll from cubiq with build in features : 
+just a small extension of the famous iScroll from cubiq with build in features. I put here a small list using the pullDown action, lazyload and polite scroll. 
 
 ## pull down /up actions
 
@@ -26,7 +26,15 @@ exemple
 	});
 ```
 
-each of these parameters is optional
+each of these parameters is optional.
+
+the $(xscroll.wrapper) trigger those events (usefull to add css classes etc): 
+
+* `pullingdown` | `pullingup` : when the user is pullingup / down the scroll
+* `pulleddown` | `pulledup` : just before the scroll is executing the pulldown / pullup action
+* `cancelpullingdown` | `cancelpullingup` : if the user cancel the pullingup/pulling down
+
+note : your turn to do anything appropriate after the pullUpAction | pullDownAction.
 
 ## lazy image load
 
