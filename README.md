@@ -6,7 +6,7 @@
 xScroll
 ===========================
 
-just a small extension of the famous iScroll from cubiq with build in features. I put here a small list using the pullDown action, lazyload and polite scroll. 
+just a small extension of the famous iScroll from cubiq with build in features. I put here a small list using the pullDown action, lazyload and polite scroll. The perfect combo (as the example use you can download here) is to mix the use of this scroll and the automatic ajax navigation plugin.
 
 ## pull down /up actions
 
