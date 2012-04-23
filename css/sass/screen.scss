@@ -1,0 +1,119 @@
+@import "_default.scss";
+  
+// -------------------------------------------------------------------
+// ALL SCREENS 
+// -------------------------------------------------------------------
+	html {height:130%}
+	body{ 
+		//size
+		@extend .relative;@extend .full-screen;padding-bottom:100px;overflow:hidden;
+		}
+	
+	//TRANSITIONS
+	body.high-graphics .css-transition-all {@include transition(all 0.2s ease-in-out);}
+	//CSS SPRITES
+	.bkg-gradient {background: url("../i/bkgGradient.png") repeat-x scroll 0 0 transparent;}
+	.bkg-picto {background: url("../i/bkgLowRes.png") no-repeat scroll 0 0 transparent;}
+// -------------------------------------------------------------------
+// SCROLLER
+// -------------------------------------------------------------------
+@-webkit-keyframes loading {
+	from { -webkit-transform:rotate(0deg) translateZ(0); }
+	to { -webkit-transform:rotate(360deg) translateZ(0); }
+}
+@-moz-keyframes loading {  
+      0% { -moz-transform:rotate(0deg) translateZ(0); }
+	100% { -moz-transform:rotate(360deg) translateZ(0); }
+}  
+
+#wrapper {
+	//size
+	width:100%;height:400px;overflow:hidden;
+	//position
+	position:relative;
+	//aesthetic
+	@extend .css-transition-all;
+	&.pulling-down, &.pulling-up {background:orange;}
+	&.pulled-down, &.pulled-up {background:red;}
+
+}
+
+#scroller {
+	//size
+	width:100%; padding:0;
+	//position
+	position:absolute;
+	//aesthetic 
+	-webkit-tap-highlight-color:rgba(0,0,0,0);
+	li {
+		//position
+		@include _clearfix(both);padding:10px;
+		//aesthetic
+		font-size:3em;line-height:100px;border-bottom:1px solid #CCC;border-top:1px solid white;background:#EEE;@include no-bullet();
+		img {
+			//size
+			margin-right:10px;
+			//position
+			float:left;
+			//aesthtetic
+			background:#c3c3c3;
+		}
+		&.prev, &.next {@extend .css-transition-all;}
+		&.prev, &.next:not(:last-child) {height:0;overflow:hidden;padding:0;margin:0;border:0;}
+		&.next {opacity:0;overflow:hidden;padding:0;margin:0;border:0;}
+		
+		&.prev.loading, &.next.loading {opacity:1;height:40px;}
+	}
+
+	.next, .prev {
+		//size
+		height:40px;line-height:40px;padding:5px 10px;
+		//position
+		//aesthetic
+		background:#fff;border-bottom:1px solid #ccc;font-weight:bold;font-size:14px;color:#888;
+		.icon {
+			//size
+			width:40px; height:40px;
+			//position
+			display:block; margin:0 auto;
+			//aesthtetic
+			background:url(../i/pull-icon@2x.png) 0 bottom no-repeat;background-size:40px 80px;
+		}
+		&.loading .icon {
+			animation-name: loading;
+			animation-duration: 2s;
+			animation-iteration-count: infinite;
+			animation-direction: normal;
+			animation-timing-function: ease-in;
+			
+			-webkit-animation-name: loading;
+			-webkit-animation-duration: 2s;
+			-webkit-animation-iteration-count: infinite;
+			-webkit-animation-direction: normal;
+			-webkit-animation-timing-function: ease-in;
+
+			-moz-animation-name: loading;
+			-moz-animation-duration: 2s;
+			-moz-animation-iteration-count: infinite;
+			-moz-animation-direction: normal;
+			-moz-animation-timing-function: ease-in;
+		}
+	}
+}	
+h1 {
+	//size
+	padding:10px 0;
+	//aesthetic 
+	font-size:2em;
+}
+
+// -------------------------------------------------------------------
+// DEVICE PIXEL RATIO
+// -------------------------------------------------------------------
+@media screen and (-webkit-device-pixel-ratio: 2) {
+ 	.bkg-picto {background-image:url(../i/bkgHighRes.png); background-size:auto 450px ;}
+}
+
+@media screen and (-webkit-device-pixel-ratio: 1.5) {
+	.bkg-picto {background-image:url(../i/bkgLowRes.png); background-size:auto 450px ;}
+}
