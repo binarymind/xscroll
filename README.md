@@ -1,36 +1,58 @@
-iScroll v4.1.9 - 2011-09-22
+
+
+
+
+
+xScroll
 ===========================
 
-The overflow:scroll for mobile webkit. Project started because webkit for iPhone does not provide a native way to scroll content inside a fixed size (width/height) div. So basically it was impossible to have a fixed header/footer and a scrolling central area. Until now. Read more at [cubiq.org](http://cubiq.org).
+just a small extension of the famous iScroll from cubiq with build in features : 
 
-## Ender support
-Using [Ender](http://ender.no.de), add it to your existing build
+## pull down /up actions
 
-    $ ender add iscroll
-
-Use it like this:
+simply add in the option when you create your xScroll the parameter 
 
 ``` js
-var myScroll = $('#doc').iScroll(options)
+pullDownAction : function() {/* do you pull down action here */}
+pullUpAction : function() {/* do you pull up action here */}
 ```
 
-## Credits and Special thanks
-iScroll is evolving thank to the help of all those who sent suggestions, bug reports and ideas on [github](https://github.com/cubiq/iscroll), my [blog](http://cubiq.org) and [googlecode](http://code.google.com/p/iscroll-js/). This is by no means the work of a sole man.
+exemple
 
-In completely random order:
+``` js
+	myScroll = new xScroll('wrapper', {
+		pullDownAction : function() {$(this.scroller).find("a:first").click();}
+		pullUpAction : function() {$(this.scroller).find("a:last").click();}
+	});
+```
 
-- All Github [contributors](https://github.com/cubiq/iscroll/contributors)
-- [beedesk](http://beedesk.com) for bug squashing in the pull to refresh feature
-- [Daniel J. Pinter](http://twitter.com/#!/HeadDZombie) for continued support, bug reports and for killing zombies
-- [Aseem Kishore](http://about.me/aseemk) for help with the zoom functionality
-- [Alex Gibson](http://miniapps.co.uk/) for continued support and bug reports
-- [Christoph Pojer](http://cpojer.net) for ideas, suggestions and bug reports
-- [Shimon Dookdin](https://github.com/shimondoodkin) for help with wheel support
-- [Will Bailey](http://blog.thirtymontgomery.com/) for commonJS compatibility
-- [Aaron Infidel](https://github.com/lifeiscontent) for bug reports and continued support
-- [David Haslem](https://github.com/therabidbanana) for suggestions and bug reports
-- [gingertom](https://github.com/gingertom) for suggestions and bug reports
-- [David Alan Hjelle](https://github.com/dahjelle) for bug squashing
-- [iangilman](https://github.com/iangilman) for help with the zoom functionality
-- All those who supported, linked, loved the iScroll
-- I'm sure I'm missing someone, sorry about that. If you helped in the script development and you don't see your name here, please drop me a line
+each of these parameters is optional
+
+## lazy image load
+
+regular lazy load plugins doesn't work with iscroll, just add the selector of your images you want to lazy load and xScroll will handle that in basic way.
+
+``` js
+	myScroll = new xScroll('wrapper', {
+		lazySelector : 'img.lazy'
+	});
+``` 
+
+your images must have the attribute data-original which contains the link to the real src-file :
+
+example : 
+  
+``` html
+	<img width="80" height="120" class="lazy" src="lazy.jpg" data-original="http://24.media.tumblr.com/tumblr_m2kgmbmf4t1qa1zngo1_400.jpg
+```   
+
+## polite scroll
+
+if you continue scrolling when you are down the scroll / up the scroll, the scroll leave the page its natural scroll. (except if you want to pull down/up to refresh of course)
+
+## thanks,contribution etc
+
+This is of course just some work i use for my use, if you have any feedback/evolutions etc, fell free to contribute/share.. Thanks for those who do great work (matteo you're the first one here !)
+
+all the best
+bastien
