@@ -165,10 +165,15 @@
 			var myOffset = $(this).offset().top;
 			if(myOffset>=that.myScrollWrapperOffset && myOffset<that.myScrollWrapperOffset+that.myScrollHeight) {
 				var myImg = $(this);
-				myImg.addClass('loading-image');
-				myImg.attr("src", myImg.attr('data-original')).css({opacity:0}).load(function() {
-					$(this).animate({opacity:1},0).addClass('loaded').removeClass("loading-image");				
-				});
+				if(myImg[0].nodeName.toLowerCase() == "img") {
+					myImg.addClass('loading-image');
+					myImg.attr("src", myImg.attr('data-original')).css({opacity:0}).load(function() {
+						$(this).animate({opacity:1},0).addClass('loaded').removeClass("loading-image");				
+					});
+				} else {
+					myImg.addClass("loaded");	
+				}
+				
 			}
 		});
 	};
