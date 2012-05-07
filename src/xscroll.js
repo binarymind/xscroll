@@ -158,7 +158,7 @@
 	};
 	xScroll.prototype.showVisibleImages = function() {
 		var that = this;
-		myScrollWrapper=$(myScroll.wrapper);
+		myScrollWrapper=$(that.wrapper);
 		that.myScrollHeight = myScrollWrapper.height();
 		that.myScrollWrapperOffset = myScrollWrapper.offset().top;
 		myScrollWrapper.find(that.lazySelector+":not(.loading-mage):not(.loaded)").each(function() {
