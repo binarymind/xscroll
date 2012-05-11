@@ -52,7 +52,7 @@
 
 	//extends iScroll
 	var xScroll = function(el, options){
-	    
+	    if(options && options.pullHeight) options.topOffset = options.pullHeight;
 	    iScroll.call(this, el, options);
 	    var that = this;
 	    //init vars
@@ -60,6 +60,7 @@
 		that.pullDownTimeout = null;
 		that.checkPullTimer = null;
 		that.pullingDown = false;
+		that.pullHeight=30;
 		that.pullingUp = false;
 		that.lazySelector = null;
 		that.showImagesTimer = null;
@@ -81,6 +82,7 @@
 	    	if(typeof options.pullUpAction !='undefined') this.pullUpAction = options.pullUpAction;
 			if(typeof options.pullUpAction !='undefined') this.pullUpAction = options.pullUpAction;	    
 	    	if(typeof options.lazySelector !='undefined') this.lazySelector = options.lazySelector;
+	    	if(typeof options.pullHeight !='undefined') this.pullHeight = options.pullHeight;
 	    	if(typeof options.onBeforeScrollStart !='undefined') this.options.onBeforeScrollStart = options.onBeforeScrollStart;
 	    } 
 	    
@@ -95,65 +97,41 @@
 	//Clear pull timeouts
 	xScroll.prototype.clearPullUp = function(){
 		var that = this;
-		if(that.pullUpTimeout) {
-			clearTimeout(that.pullUpTimeout);
-			this.pullUpTimeout = null;
-		}
 		if(that.pullingUp) {
 			$(that.wrapper).trigger("cancelpullingup");
 			that.pullingUp = false;
+			that.pulledUp = false;
 		}
 	};
 	xScroll.prototype.clearPullDown = function(){
 		var that = this;
-		if(that.pullDownTimeout) {
-			clearTimeout(that.pullDownTimeout);
-			that.pullDownTimeout = null;
-		}
 		if(that.pullingDown) {
 			$(that.wrapper).trigger("cancelpullingdown");
 			that.pullingDown = false;
+			that.pulledDown = false;
 		}
 	};
 	//check pull
-	xScroll.prototype.checkPull = function(timeout){
-		if(typeof timeout == "undefined") timeout=null;
-		var that = this;
-		that.checkPullTimer = null;
-		if(that.y>0) {
+	xScroll.prototype.checkPull = function(timeout, e){
+		var that=this;
+		if (that.y > that.pullHeight && !that.pullingDown) {
 			if(!that.options.pullDownAction) return;
-			//in any case = NO pullUp
-			that.clearPullUp();
-			if(!that.pullingDown) {
-				//we are potentially pulling down, set timout to be sure
-				$(that.wrapper).trigger("pullingdown");
-				that.pullingDown = true;
-				that.pullDownTimeout = setTimeout(function(){that.checkPull(true)}, 1500);
-			} else if(timeout==true){
-				that.clearPullDown();
-				$(that.wrapper).trigger("pulleddown");
-				that.pullDownAction();
-			}
-		} else {
+			that.pullingDown = true;
+			$(that.wrapper).trigger("pullingdown");
+			that.minScrollY = 0;
+		} else if (that.y < that.pullHeight && that.pullingDown) {
+			if(!that.options.pullDownAction) return;
+			that.pullingDown = false;
+			that.minScrollY = that.pullHeight;
+		} else if (that.y < (that.maxScrollY - that.pullHeight) && !that.pullingUp) {
 			if(!that.options.pullUpAction) return;
-			//in any case = NO pullDown
-			that.clearPullDown();
-			if(that.y < that.maxScrollY) {
-				if(!that.pullingUp) {
-					//we are potentially pulling down, set timout to be sure
-					$(that.wrapper).trigger("pullingup");
-					that.pullingUp = true;
-					that.pullUpTimeout = setTimeout(function(){that.checkPull(true)}, 1500);
-				} else if(timeout==true) {
-					that.clearPullUp();
-					$(that.wrapper).trigger("pulledup");
-					that.pullUpAction();
-				}
-			} else {
-				//in any case = NO pullUp
-				that.clearPullUp();
-			}
-				
+			that.pullingUp=true;
+			$(that.wrapper).trigger("pullingup");
+			that.maxScrollY = that.maxScrollY;
+		} else if (that.y > (that.maxScrollY + that.pullHeight) && that.pullingUp) {
+			if(!that.options.pullUpAction) return;
+			that.pullingUp = false;
+			that.maxScrollY = that.maxScrollY+that.pullHeight;
 		}
 	};
 	xScroll.prototype.showVisibleImages = function() {
@@ -263,7 +241,6 @@
 			newY = that.y + deltaY,
 			c1, c2, scale,
 			timestamp = e.timeStamp || Date.now();
-
 		if (that.options.onBeforeScrollMove) that.options.onBeforeScrollMove.call(that, e);
 		
 		// Zoom
@@ -361,8 +338,9 @@
 		if (that.options.onScrollMove) that.options.onScrollMove.call(that, e);
 		
 		if(that.options.pullDownAction || that.options.pullUpAction) {
-			if(that.checkPullTimer) clearTimeout(that.checkPullTimer);
-			that.checkPullTimer = setTimeout(function(){that.checkPull()}, 10);	
+			//if(that.checkPullTimer) clearTimeout(that.checkPullTimer);
+			//that.checkPullTimer = setTimeout(function(){that.checkPull()}, 10);	
+			that.checkPull(null, e);
 		}
 		if(!that.lazySelector) return;		
 		if(that.showImagesTimer) clearTimeout(that.showImagesTimer);
@@ -380,12 +358,17 @@
 	xScroll.prototype._oldend = xScroll.prototype._end;
 	xScroll.prototype._end = function(e) {
 		var that = this;
-		that.clearPullUp();
-		that.clearPullDown();
+		if (that.pullingDown) {
+			that.pullDownAction();
+			$(that.wrapper).trigger("pulleddown");
+
+		} else if (that.pullingUp) {
+			that.pullUpAction();
+			$(that.wrapper).trigger("pulledup");
+		}
 		that._oldend(e);
 	};
 	//define scope
 	if (typeof exports !== 'undefined') exports.xScroll = xScroll;
 	else window.xScroll = xScroll;
 })();
-/******************** /xScroll **********************/
