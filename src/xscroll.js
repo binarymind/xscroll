@@ -114,16 +114,17 @@
 	//check pull
 	xScroll.prototype.checkPull = function(timeout, e){
 		var that=this;
-		if (that.y > that.pullHeight && !that.pullingDown) {
+		if (that.y >= that.pullHeight && !that.pullingDown) {
 			if(!that.options.pullDownAction) return;
-			that.pullingDown = true;
 			$(that.wrapper).trigger("pullingdown");
+			that.pullingDown = true;
 			that.minScrollY = 0;
 		} else if (that.y < that.pullHeight && that.pullingDown) {
 			if(!that.options.pullDownAction) return;
 			that.pullingDown = false;
+			$(that.wrapper).trigger("cancelpullingdown");
 			that.minScrollY = that.pullHeight;
-		} else if (that.y < (that.maxScrollY - that.pullHeight) && !that.pullingUp) {
+		} else if (that.y <= (that.maxScrollY - that.pullHeight) && !that.pullingUp) {
 			if(!that.options.pullUpAction) return;
 			that.pullingUp=true;
 			$(that.wrapper).trigger("pullingup");
@@ -131,6 +132,7 @@
 		} else if (that.y > (that.maxScrollY + that.pullHeight) && that.pullingUp) {
 			if(!that.options.pullUpAction) return;
 			that.pullingUp = false;
+			$(that.wrapper).trigger("cancelpullingup");
 			that.maxScrollY = that.maxScrollY+that.pullHeight;
 		}
 	};
@@ -361,10 +363,11 @@
 		if (that.pullingDown) {
 			that.pullDownAction();
 			$(that.wrapper).trigger("pulleddown");
-
+			that.pullingDown = false;
 		} else if (that.pullingUp) {
 			that.pullUpAction();
 			$(that.wrapper).trigger("pulledup");
+			that.pullingUp = false;
 		}
 		that._oldend(e);
 	};
