@@ -2,7 +2,6 @@
 
 
 
-
 xScroll
 ===========================
 
@@ -60,7 +59,7 @@ if you continue scrolling when you are down the scroll / up the scroll, the scro
 
 ## thanks,contribution etc
 
-This is of course just some work i use for my use, if you have any feedback/evolutions etc, fell free to contribute/share.. Thanks for those who do great work (matteo you're the first one here !)
+This is of course just some work I use at work for all projects, pull requests if you need anything, i'll be fast to answer them. Thanks & thanks to matteo for original iScroll.
 
 all the best
 bastien
